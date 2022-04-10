@@ -7,14 +7,7 @@ import { ProductService } from 'src/app/services/product.service';
   selector: 'app-product',
   templateUrl:'./product.component.html',
   styleUrls: ['./product.component.scss'],
-  styles: [`
-        :host ::ng-deep .p-dialog .product-image {
-            width: 150px;
-            margin: 0 auto 2rem auto;
-            display: block;
-        }
-    `],
-     providers: [MessageService,ConfirmationService]
+  
 })
 export class ProductComponent implements OnInit {
 
