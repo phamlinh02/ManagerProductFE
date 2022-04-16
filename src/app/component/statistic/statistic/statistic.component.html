@@ -1,0 +1,17 @@
+<div class="container">
+      <div class="content">
+            Product Statistic
+            <div [formGroup]="form" class="aroundDate">
+                  <p class="text-warning">Selected around date want to statistic</p>
+                  <div class="form-row">
+                        <ng2-flatpickr #startPicker [config]="startOptions" formControlName="start"></ng2-flatpickr>
+                        <button (click)="find()" type="submit" class="btn btn-primary">Find</button>
+                  </div>
+            </div>
+      </div>
+
+
+      
+      <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions">
+      </highcharts-chart>
+</div>

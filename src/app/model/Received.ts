@@ -1,4 +1,4 @@
-export class received{
+export class Received{
     id !:number;
     sumPrice!: number;
     sumQuality!:number;

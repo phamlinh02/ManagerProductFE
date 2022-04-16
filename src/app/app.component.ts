@@ -1,34 +1,50 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { TokenStorageService } from './services/token-storage.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { delay, filter } from 'rxjs/operators';
+import { Event  } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
+  proStatic = false;
+  dashboard = true;
+  revStatic = false;
+  managerUser = false;
+  profileUser = false;
+  aboutUser = false;
 
-  private roles: string[] = [];
-  isLoggedIn = false;
-  showAdminBoard = false;
-  showEmployeeBoard = false;
-  username?: string;
-  constructor(private tokenStorageService: TokenStorageService) { }
-  ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
-    if (this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
-      this.roles = user.roles;
-      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showEmployeeBoard = this.roles.includes('ROLE_EMPLOYEE');
-      this.username = user.username;
-    }
-  }
-  logout(): void {
-    this.tokenStorageService.signOut();
-    window.location.reload();
-  }
+  public url: string = '';
 
+  constructor(private observer: BreakpointObserver, private router: Router, private activatedRoute: ActivatedRoute) {
+    
+  }
   
+
+  ngOnInit() {
+    this.router.events.subscribe((event:Event) => {
+      if(event instanceof NavigationEnd ){
+        this.url = event.url;
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+      console.log(this.sidenav.mode);
+
+      if (res.matches) {
+        this.sidenav.mode = 'over';
+        this.sidenav.close();
+      } else {
+        this.sidenav.mode = 'side';
+        this.sidenav.open();
+      }
+    });
+  }
 }
