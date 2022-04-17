@@ -1,11 +1,22 @@
+<p-toast></p-toast>
+
 <div class="card">
-    <div class="mb-3">
-        <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
-        <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-        <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
-    </div>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openNew()"></button>
+            
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+                class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
     <p-table [value]="users" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first" responsiveLayout="scroll" #userTable
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,25,50]" styleClass="p-datatable-lg"
+        
         >
         <ng-template pTemplate="header">
             <tr>
@@ -18,14 +29,154 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user>
-            <tr>
+            <tr >
                 <td>{{user.empName}}</td>
                 <td>{{user.phone}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.role}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)">
+                        
+                    </button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(user)">
+                        
+                    </button>
+                </td>
 
             </tr>
         </ng-template>
     </p-table>
 </div>
+
+
+<p-dialog [(visible)]="editUsers" [style]="{'width': '600px'}" header="User Details" [modal]="true"
+    styleClass="p-fluid">
+
+    <ng-template pTemplate="content">
+
+        <form (ngSubmit)="updateUser(saveForm)" #saveForm="ngForm">
+            <div class="field">
+                <label for="name">Name</label>
+
+                <input type="text" name="name" class="form-control" #name="ngModel" id="name"
+                    [(ngModel)]="user.empName" required autofocus />
+                <small class="p-error" *ngIf="name.errors">Name is required.</small>
+            </div>
+
+            <div class="field">
+                <label for="name">UserName</label>
+
+                <input type="text" name="username" class="form-control" #username="ngModel" id="name"
+                    [(ngModel)]="user.username" required autofocus />
+                <small class="p-error" *ngIf="username.errors">Name is required.</small>
+            </div>
+
+            <div class="form-group ">
+                <label for="category">Role</label>
+                <select id="category" class="form-control" name="categoryName" #role [(ngModel)]="selectedRole">
+                
+                <option *ngFor="let role of roles" [selected]="user.role === role.roleId"
+                value="{{role.roleId}}">{{role.roleName}}   </option>
+                     
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="price">Phone</label>
+                <input type="text" name="phone" class="form-control" id="price" required #phone="ngModel"
+                    [(ngModel)]="user.phone" mode="currency" currency="USD" locale="en-US">
+                <span class="p-error" *ngIf="phone.errors ">Please fill the phone</span>
+            </div>
+            <div class="field">
+                <label for="quantity">Email</label>
+                <input id="quantity" name="email" type="email" #email="ngModel" class="form-control"
+                    [(ngModel)]="user.email">
+                <span *ngIf="email.errors " class="p-error">Fill the email
+                    0</span>
+
+            </div>
+            <div class="field">
+                <label for="disabled">Disable</label>
+                <select id="category" class="form-control" name="category" #cate [(ngModel)]="selectedDisable">
+                    <option selected value="0">Enable</option>
+                    <option value="1">Disable</option>
+                </select>
+                
+
+            </div>
+            <div class="form-group float-right">
+                <!-- <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text col-6"
+                    (click)="hideDialog()"></button> -->
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text col-6"></button>
+            </div>
+        </form>
+
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="createNew" [style]="{'width': '600px'}" header="User Details" [modal]="true"
+    styleClass="p-fluid">
+
+    <ng-template pTemplate="content">
+
+        <form (ngSubmit)="saveUser(saveForm)" #saveForm="ngForm">
+            <div class="field">
+                <label for="name">Name</label>
+
+                <input type="text" name="name" class="form-control" #name="ngModel" id="name"
+                    [(ngModel)]="user.empName" required autofocus />
+                <small class="p-error" *ngIf="name.errors">Name is required.</small>
+            </div>
+
+            <div class="field">
+                <label for="name">UserName</label>
+
+                <input type="text" name="username" class="form-control" #username="ngModel" id="name"
+                    [(ngModel)]="user.username" required autofocus />
+                <small class="p-error" *ngIf="username.errors">Name is required.</small>
+            </div>
+
+            <div class="form-group ">
+                <label for="category">Role</label>
+                <select id="category" class="form-control" name="categoryName" #role [(ngModel)]="selectedRole">
+                    <option *ngFor="let role of roles" value="{{role.roleId}}">{{role.roleName}}</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="price">Phone</label>
+                <input type="text" name="phone" class="form-control" id="price" required #phone="ngModel"
+                    [(ngModel)]="user.phone" mode="currency" currency="USD" locale="en-US">
+                <span class="p-error" *ngIf="phone.errors ">Please fill the phone</span>
+            </div>
+            <div class="field">
+                <label for="quantity">Email</label>
+                <input id="quantity" name="email" type="email" #email="ngModel" class="form-control"
+                    [(ngModel)]="user.email">
+                <span *ngIf="email.errors " class="p-error">Fill the email
+                    0</span>
+
+            </div>
+            <div class="field">
+                <label for="disabled">Disable</label>
+                <select id="category" class="form-control" name="category" #cate [(ngModel)]="selectedDisable">
+                    <option selected value="0">Enable</option>
+                    <option value="1">Disable</option>
+                </select>
+                
+
+            </div>
+            <div class="form-group float-right">
+                <!-- <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text col-6"
+                    (click)="hideDialog()"></button> -->
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text col-6"></button>
+            </div>
+        </form>
+
+    </ng-template>
+
+
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

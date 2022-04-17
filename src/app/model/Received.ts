@@ -1,8 +1,9 @@
-export class received{
-    id !:number;
+export class Received{
+    recId !:number;
     sumPrice!: number;
-    sumQuality!:number;
+    sumQuantity!:number;
     empId !:number;
     recDate!:string;
     note!:string;
+    empName !: string;
 }
