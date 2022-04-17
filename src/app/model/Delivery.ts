@@ -4,4 +4,5 @@ export class Delivery {
   sumPrice!: number;
   sumQuantity!: number;
   empId!: number;
+  empName !: string;
 }

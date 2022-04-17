@@ -1,1 +1,84 @@
-<p>received works!</p>
+
+<div class="card">
+
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+              (click)="openNew()"></button>
+
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+                    class="mr-2 inline-block"></p-fileUpload>
+      <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="received" [rows]="10" [paginator]="true"
+           [globalFilterFields]="['recId','empName','note']" responsiveLayout="scroll"
+           [rowHover]="true" dataKey="id"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[5,10,25,50]">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Received Details</h5>
+        <span class="p-input-icon-left">
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'include')"
+                           placeholder="Search..." />
+                </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="recId">Id <p-sortIcon field="recId"></p-sortIcon>
+        </th>
+        <th pSortableColumn="recDate">Received Date <p-sortIcon field="recDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="sumPrice">Sum Price <p-sortIcon field="sumPrice"></p-sortIcon>
+        </th>
+        <th pSortableColumn="sumQuantity">Sum Quantity <p-sortIcon field="sumQuantity"></p-sortIcon>
+        </th>
+        <th pSortableColumn="empName">Employee Name <p-sortIcon field="empName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="note">Note<p-sortIcon field="note"></p-sortIcon>
+        </th>
+        <th pSortableColumn="">Action </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rec>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="rec"></p-tableCheckbox>
+        </td>
+        <td>{{rec.recId}}</td>
+        <!-- <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td> -->
+        <td>{{rec.recDate }}</td>
+        <td>{{rec.sumPrice | currency : 'VND'}}</td>
+        <td>{{rec.sumQuantity}}</td>
+        <td>{{rec.empName}}</td>
+        <td>{{rec.note}}</td>
+
+        <!-- <td><p-rating [ngModel]="product.rating" ></p-rating></td> -->
+        <!-- <td><span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td> -->
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                  (click)="editRec(rec)">
+
+          </button>
+
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        In total there are {{received ? received.length : 0 }} products.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+

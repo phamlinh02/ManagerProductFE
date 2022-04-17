@@ -1,1 +1,80 @@
-<p>delivery works!</p>
+
+<!--[(selection)]="selectedProducts"-->
+<div class="card">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+              (click)="openNew()"></button>
+
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+                    class="mr-2 inline-block"></p-fileUpload>
+      <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="delivery" [rows]="10" [paginator]="true"
+           [globalFilterFields]="['id','empName']" responsiveLayout="scroll"
+           [rowHover]="true" dataKey="id"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+           [rowsPerPageOptions]="[5,10,25,50]">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Delivery Details</h5>
+        <span class="p-input-icon-left">
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"
+                           placeholder="Search..." />
+                </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="delivDate">Delivery Date <p-sortIcon field="delivDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="sumPrice">Sum Price <p-sortIcon field="sumPrice"></p-sortIcon>
+        </th>
+        <th pSortableColumn="sumQuantity">Sum Quantity <p-sortIcon field="sumQuantity"></p-sortIcon>
+        </th>
+        <th pSortableColumn="empName">Employee Name <p-sortIcon field="empName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="">Action </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-deli>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="deli"></p-tableCheckbox>
+        </td>
+        <td>{{deli.id}}</td>
+        <!-- <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td> -->
+        <td>{{deli.delivDate }}</td>
+        <td>{{deli.sumPrice | currency : 'VND'}}</td>
+        <td>{{deli.sumQuantity}}</td>
+        <td>{{deli.empName}}</td>
+        <!-- <td><p-rating [ngModel]="product.rating" ></p-rating></td> -->
+        <!-- <td><span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td> -->
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                  (click)="editDeli(deli)">
+
+          </button>
+          
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        In total there are {{delivery ? delivery.length : 0 }} products.
+      </div>
+    </ng-template>
+  </p-table>
+
+</div>

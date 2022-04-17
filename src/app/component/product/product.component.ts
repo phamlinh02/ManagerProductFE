@@ -152,7 +152,7 @@ export class ProductComponent implements OnInit {
     }
 
     console.log(this.product);
-    
+
 
     this.productService.updateProduct(product).subscribe(
       (result) => {
@@ -172,25 +172,21 @@ export class ProductComponent implements OnInit {
 
   saveProduct(form: NgForm) {
 
-    this.product = new Product();
-
-    this.product.cateName = form.value.cateName;
+    console.log(this.product)
     this.product.madeName = this.selectedMade;
     this.product.cateName = this.selectedCategory;
-    this.product.price = form.value.price;
-    this.product.quantity = form.value.quantity;
-    this.product.unitName = form.value.unit;
+    this.product.unitName = this.selectedUnit;
     this.product.disable = this.selectedDisable;
-    this.product.proName = form.value.proName;
 
     console.log(this.product);
-    
+
     this.productService.saveProduct(this.product).subscribe(
       (result) => {
         console.log(result);
         this.logMess('success', 'Successful', 'Product is save');
         this.product = new Product();
         this.hideDialog()
+        this.ngOnInit()
         return true;
       },
       (error) => {

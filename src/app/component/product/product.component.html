@@ -5,7 +5,7 @@
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
                 (click)="openNew()"></button>
-           
+
         </ng-template>
 
         <ng-template pTemplate="right">
@@ -99,7 +99,7 @@
             </div>
 
             <div class="form-group ">
-                <label for="category">Category</label>
+                <label >Category</label>
                 <select id="category" class="form-control" name="category" #cate [(ngModel)]="selectedCategory">
                     <option selected>Select a category</option>
                     <option *ngFor="let cate of category" [selected]="product.cateName === cate.cateName">{{cate.cateName}}</option>
@@ -135,12 +135,12 @@
                 </select>
             </div>
             <div class="field">
-                <label for="disabled">Disable</label>
-                <select id="category" class="form-control" name="category" #cate [(ngModel)]="selectedDisable">
+                <label >Disable</label>
+                <select id="disable" class="form-control" name="category" #cate [(ngModel)]="selectedDisable">
                     <option selected value="0">Enable</option>
                     <option value="1">Disable</option>
                 </select>
-                
+
 
             </div>
             <div class="form-group float-right">
@@ -166,14 +166,14 @@
             <div class="field">
                 <label for="name">Name</label>
 
-                <input type="text" name="name" class="form-control" #name="ngModel" id="name"
+                <input type="text" name="name" class="form-control" #name="ngModel" id="nameSave"
                     [(ngModel)]="product.proName" required autofocus />
                 <small class="p-error" *ngIf="name.errors">Name is required.</small>
             </div>
 
             <div class="form-group ">
                 <label for="category">Category</label>
-                <select id="category" class="form-control" name="categoryName" #cateName [(ngModel)]="selectedCategory">
+                <select id="categorySave" class="form-control" name="categoryName" #cateName [(ngModel)]="selectedCategory">
                     <option selected>Select a category</option>
                     <option *ngFor="let cate of category"  >{{cate.cateName}}</option>
                 </select>
@@ -181,13 +181,13 @@
 
             <div class="field">
                 <label for="price">Price</label>
-                <input type="number" name="pricePro" class="form-control" id="price" required #price="ngModel"
+                <input type="number" name="pricePro" class="form-control" id="priceSave" required #price="ngModel"
                     [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US">
-                <span class="p-error" *ngIf="price.errors || product.price <0">Price must be greater than 0</span>
+                <span class="p-error" *ngIf="price.errors || (product.price % 100)">Price must be mod 100</span>
             </div>
             <div class="field">
                 <label for="quantity">Quantity</label>
-                <input id="quantity" name="quantityPro" type="number" #quantityPro="ngModel" class="form-control"
+                <input id="quantitySave" name="quantityPro" type="number" #quantityPro="ngModel" class="form-control"
                     [(ngModel)]="product.quantity">
                 <span *ngIf="quantityPro.errors || product.quantity < 0" class="p-error">Quantity must be greater than
                     0</span>
@@ -195,25 +195,25 @@
             </div>
             <div class="form-group ">
                 <label for="unit">Unit</label>
-                <select id="unit" class="form-control" name="unitPro" #unitPro [(ngModel)]="selectedUnit">
+                <select id="unitSave" class="form-control" name="unitPro" #unitPro [(ngModel)]="selectedUnit">
                     <option selected>Select an unit</option>
                     <option *ngFor="let unit of units" >{{unit.unitName}}</option>
                 </select>
             </div>
             <div class="form-group ">
                 <label for="made">Made</label>
-                <select id="made" class="form-control" name="madePro" #madePro [(ngModel)]="selectedMade">
+                <select id="madeSave" class="form-control" name="madePro" #madePro [(ngModel)]="selectedMade">
                     <option selected>Select made by</option>
                     <option *ngFor="let made of mades">{{made.madeName}}</option>
                 </select>
             </div>
             <div class="field">
-                <label for="disabled">Disable</label>
-                <select id="category" class="form-control" name="category" #cate [(ngModel)]="selectedDisable">
+                <label >Disable</label>
+                <select id="disableSave" class="form-control" name="category" #cate [(ngModel)]="selectedDisable">
                     <option selected value="0">Enable</option>
                     <option value="1">Disable</option>
                 </select>
-                
+
 
             </div>
             <div class="form-group float-right">

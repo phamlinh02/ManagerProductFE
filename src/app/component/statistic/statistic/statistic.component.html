@@ -1,17 +1,22 @@
 <div class="container">
-      <div class="content">
-            Product Statistic
-            <div [formGroup]="form" class="aroundDate">
-                  <p class="text-warning">Selected around date want to statistic</p>
-                  <div class="form-row">
-                        <ng2-flatpickr #startPicker [config]="startOptions" formControlName="start"></ng2-flatpickr>
-                        <button (click)="find()" type="submit" class="btn btn-primary">Find</button>
-                  </div>
-            </div>
+  <div class="content">
+    Delivery Statistic
+    <div [formGroup]="form" class="aroundDate">
+      <p class="text-warning">Selected around date want to statistic</p>
+      <div class="form-row">
+        <ng2-flatpickr #startPicker [config]="startOptions" formControlName="start"></ng2-flatpickr>
+        <button (click)="find()" type="submit" class="btn btn-primary">Find</button>
       </div>
-
-
-      
-      <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions">
-      </highcharts-chart>
+    </div>
+  </div>
+  <div class="row">
+    <div style="height: 250px; width:500px" class="col-6">
+      <h5>Price</h5>
+      <p-chart type="bar" [data]="priceData" [options]="basicOptions"></p-chart>
+    </div>
+    <div style="height: 250px; width:500px" class="col-6">
+      <h5>Quantity</h5>
+      <p-chart type="bar" [data]="quantityData" [options]="basicOptions"></p-chart>
+    </div>
+  </div>
 </div>
